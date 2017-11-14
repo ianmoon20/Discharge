@@ -28,6 +28,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		Vector3 m_CapsuleCenter;
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
+		public bool GetCrouching(){ return m_Crouching; }
 
 
 		void Start()
@@ -43,7 +44,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		}
 
 
-		public void Move(Vector3 move, bool crouch, bool jump)
+		public void Move(Vector3 move, bool crouch, bool jump, bool sprint)
 		{
 
 			// convert the world relative moveInput vector into a local-relative
@@ -55,6 +56,13 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			move = Vector3.ProjectOnPlane(move, m_GroundNormal);
 			m_TurnAmount = Mathf.Atan2(move.x, move.z);
 			m_ForwardAmount = move.z;
+			if (crouch) {
+				m_ForwardAmount *= 1.0f;
+			}else if (sprint) {
+				m_ForwardAmount *= 1.5f;
+			} else {
+				m_ForwardAmount *= 0.5f;
+			}
 
 			ApplyExtraTurnRotation();
 
