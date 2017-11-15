@@ -24,21 +24,24 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		crouching = tpc.GetCrouching ();
-		sprinting = tpuc.GetSprint ();
+		crouching = tpc.Crouching;
+		sprinting = tpuc.Sprinting;
 
 		if (crouching) {
-			noiseBubble.radius = 10;
+			noiseBubble.radius = crouchRadius;
 		} else if (sprinting) {
-			noiseBubble.radius = 50;
+			noiseBubble.radius = sprintRadius;
 		} else {
-			noiseBubble.radius = 20;
+			noiseBubble.radius = walkRadius;
 		}
+
+        
 	}
 
-	void OnTriggerEnter(Collider c){
+	void OnTriggerStay(Collider c){
 		if (c.gameObject.tag == "Enemy") {
-			Debug.Log ("An Enemy Found me!");
+            Enemy enemy = c.gameObject.GetComponent<Enemy>();
+            //enemy.investigateNoise(this.gameObject.transform.position);
 		}
 	}
 }

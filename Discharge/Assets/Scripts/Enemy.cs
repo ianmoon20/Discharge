@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//enum for enemy behavior
+public enum EnemyState
+{
+    Patrolling,
+    Investigating,
+    Chasing,
+    Sweeping,
+    Disabled
+};
+
 public class Enemy : MonoBehaviour {
 
-    //enum for enemy behavior
-    private enum EnemyState
-    {
-        Patrolling,
-        Investigating,
-        Chasing,
-        Sweeping,
-        Disabled
-    };
+    
+    
 
     //variables for the enemy class
 
     //reference of player
-    public GameObject target;
+    private GameObject target;
 
     //the current state the enemy is in
     private EnemyState currentState;
@@ -61,6 +64,7 @@ public class Enemy : MonoBehaviour {
     public Vector3 StartLocation { get { return startLocation; } }
     public Vector3 TargetDestination {get{return targetDestination;} }
     public Vector3[] Path { get { return path; } }
+    public EnemyState CurrentState { get { return currentState; } }
 
 
     //public variables for initialization
@@ -148,7 +152,7 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void investigating()
     {
-
+        Debug.Log("Investigating location: " + targetDestination);
     }
 
     /// <summary>
@@ -180,12 +184,16 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void detection()
     {
-
+        CapsuleCollider playerCapColl = target.GetComponent<CapsuleCollider>();
+        Vector3 heightAdjustment = new Vector3(0, playerCapColl.center.y + playerCapColl.height / 2,0);
         //gets dot product to determine if facing player
-        Vector3 targetDir = target.transform.position - transform.position;
+        Vector3 targetDir = target.transform.position + heightAdjustment - transform.position;
         float dot = Vector3.Dot(transform.forward, targetDir.normalized);
-       
-        if (dot > 0.7f) {
+
+        float angle = Mathf.Rad2Deg * Mathf.Acos(dot);
+
+        if (angle < 30)
+        {
 
 
             //raycast to see if there are obstacles
@@ -193,13 +201,19 @@ public class Enemy : MonoBehaviour {
 
             if (Physics.Raycast(transform.position, targetDir.normalized, out hit, 10.0f))
 
-                if(hit.transform.gameObject.tag == "Player")
+                if (hit.transform.gameObject.tag == "Player")
                 {
                     Debug.Log("player spotted");
                 }
 
         }
 
-        
+
+    }
+
+    public void investigateNoise(Vector3 noiseLocation)
+    {
+        currentState = EnemyState.Investigating;
+        targetDestination = noiseLocation;
     }
 }

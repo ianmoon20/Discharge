@@ -28,7 +28,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		Vector3 m_CapsuleCenter;
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
-		public bool GetCrouching(){ return m_Crouching; }
+		public bool Crouching{ get { return m_Crouching; } }
 
 
 		void Start()
