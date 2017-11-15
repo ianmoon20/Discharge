@@ -16,6 +16,9 @@ public class Enemy : MonoBehaviour {
 
     //variables for the enemy class
 
+    //reference of player
+    public GameObject target;
+
     //the current state the enemy is in
     private EnemyState currentState;
 
@@ -73,6 +76,7 @@ public class Enemy : MonoBehaviour {
         pathIndex = 0;
         targetDestination = path[pathIndex];
         startLocation = gameObject.transform.position;
+        target = GameObject.FindGameObjectsWithTag("Player")[0];
 
     }
 	
@@ -103,7 +107,7 @@ public class Enemy : MonoBehaviour {
 
         }
 
-
+        detection();
 
         setDestination();
 	}
@@ -177,5 +181,25 @@ public class Enemy : MonoBehaviour {
     private void detection()
     {
 
+        //gets dot product to determine if facing player
+        Vector3 targetDir = target.transform.position - transform.position;
+        float dot = Vector3.Dot(transform.forward, targetDir.normalized);
+       
+        if (dot > 0.7f) {
+
+
+            //raycast to see if there are obstacles
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, targetDir.normalized, out hit, 10.0f))
+
+                if(hit.transform.gameObject.tag == "Player")
+                {
+                    Debug.Log("player spotted");
+                }
+
+        }
+
+        
     }
 }

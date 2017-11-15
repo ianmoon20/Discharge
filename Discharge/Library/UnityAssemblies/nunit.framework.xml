@@ -12497,14 +12497,6 @@
             
             </summary>
         </member>
-<<<<<<< HEAD
-=======
-        <member name="P:NUnit.Framework.Internal.Reflect.ConstructorCallWrapper">
-            <summary>
-            Constructor delegate, makes it possible to use a factory to create objects
-            </summary>
-        </member>
->>>>>>> b73c623150d488fdca94013f47b3cccd1c654b22
         <member name="T:NUnit.Framework.Internal.TestResult">
             <summary>
             The TestResult class represents the result of a test.
