@@ -1,4 +1,12 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/jacksonTestScene.unity
+=======
+<<<<<<< HEAD
+- path: Assets/Scenes/MichaelTest.unity
+=======
+- path: Assets/Scenes/AriaTestScene.unity
+>>>>>>> 87ef5455d4fc8eefdd63622f55a1663a266883d9
+>>>>>>> b73c623150d488fdca94013f47b3cccd1c654b22
   isLoaded: 1
   isActive: 1

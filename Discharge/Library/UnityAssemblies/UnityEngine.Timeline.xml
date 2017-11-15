@@ -114,11 +114,27 @@
         <para>A Timeline track used for playing back animations on an Animator.</para>
       </summary>
     </member>
+<<<<<<< HEAD
+=======
+    <member name="P:UnityEngine.Timeline.AnimationTrack.applyAvatarMask">
+      <summary>
+        <para>Specifies whether to apply the AvatarMask to the track.</para>
+      </summary>
+    </member>
+>>>>>>> b73c623150d488fdca94013f47b3cccd1c654b22
     <member name="P:UnityEngine.Timeline.AnimationTrack.applyOffsets">
       <summary>
         <para>Specifies whether to apply track root motion offsets to all clips on the track.</para>
       </summary>
     </member>
+<<<<<<< HEAD
+=======
+    <member name="P:UnityEngine.Timeline.AnimationTrack.avatarMask">
+      <summary>
+        <para>Specifies an AvatarMask to be applied.</para>
+      </summary>
+    </member>
+>>>>>>> b73c623150d488fdca94013f47b3cccd1c654b22
     <member name="P:UnityEngine.Timeline.AnimationTrack.inClipMode">
       <summary>
         <para>Specifies whether the Animation Track has clips, or is in infinite mode.</para>
@@ -598,9 +614,15 @@
         <para>Is the clip being extrapolated before it's start time?</para>
       </summary>
     </member>
+<<<<<<< HEAD
     <member name="P:UnityEngine.Timeline.TimelineClip.locked">
       <summary>
         <para>Is the clip locked for editing?</para>
+=======
+    <member name="P:UnityEngine.Timeline.TimelineClip.parentTrack">
+      <summary>
+        <para>Returns the parent track where this clip is attached.</para>
+>>>>>>> b73c623150d488fdca94013f47b3cccd1c654b22
       </summary>
     </member>
     <member name="P:UnityEngine.Timeline.TimelineClip.postExtrapolationMode">
