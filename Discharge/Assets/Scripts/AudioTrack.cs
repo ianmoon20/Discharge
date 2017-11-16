@@ -5,8 +5,25 @@ using UnityEngine;
 public class AudioTrack : MonoBehaviour {
 
 	private AudioSource[] tracks;
+
+    public int TrackSize
+    { 
+        get {
+            return tracks.Length;
+        }
+    }
+    
+        
+
 	public enum State {t1, t2, t3};
-	public State curState = State.t1;
+
+    private State currState = State.t1;
+
+    public State CurrState
+    {
+        get { return currState; }
+        set { currState = value; }
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -20,19 +37,24 @@ public class AudioTrack : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(curState == State.t1) {
-			tracks[1].mute = true;
-			tracks[2].mute = true;
-		}
-
-		else if(curState == State.t2) {
-			tracks[1].mute = false;
-			tracks[2].mute = true;
-		}
-
-		else if(curState == State.t3) {
-			tracks[1].mute = false;
-			tracks[2].mute = false;
-		}
+        switch (currState)
+        {
+            case (State.t1):
+                tracks[1].mute = true;
+                tracks[2].mute = true;
+                break;
+            case (State.t2):
+                tracks[1].mute = false;
+                tracks[2].mute = true;
+                break;
+            case (State.t3):
+                tracks[1].mute = false;
+                tracks[2].mute = false;
+                break;
+            default:
+                tracks[1].mute = true;
+                tracks[2].mute = true;
+                break;
+        }
 	}
 }

@@ -2,25 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//enum for enemy behavior
-public enum EnemyState
-{
-    Patrolling,
-    Investigating,
-    Chasing,
-    Sweeping,
-    Disabled
-};
 
 public class Enemy : MonoBehaviour {
-
-    
-    
+    //enum for enemy behavior
+    public enum EnemyState
+    {
+        Patrolling,
+        Investigating,
+        Chasing,
+        Sweeping,
+        Disabled
+    };
 
     //variables for the enemy class
 
     //reference of player
     private GameObject target;
+
+    //reference to player capsule collider
+    private CapsuleCollider playerCapColl; 
 
     //the current state the enemy is in
     private EnemyState currentState;
@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour {
     private int pathIndex;
 
     //floats for spotting the player
-    private float discoverDelay;
+    [SerializeField] float discoverDelay = 5;
     private float discoverProgress;
 
     //The enemys current destination
@@ -66,6 +66,8 @@ public class Enemy : MonoBehaviour {
     public Vector3[] Path { get { return path; } }
     public EnemyState CurrentState { get { return currentState; } }
 
+    private GameManager gameManager;
+
 
     //public variables for initialization
     public Vector3[] setPath;
@@ -80,7 +82,10 @@ public class Enemy : MonoBehaviour {
         pathIndex = 0;
         targetDestination = path[pathIndex];
         startLocation = gameObject.transform.position;
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         target = GameObject.FindGameObjectsWithTag("Player")[0];
+        discoverDelay = 5f;
+        playerCapColl = target.GetComponent<CapsuleCollider>();
 
     }
 	
@@ -131,6 +136,7 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void patrolling()
     {
+        Debug.Log(targetDestination);
         //check if x and z are correct
         if(gameObject.transform.position.x == targetDestination.x && gameObject.transform.position.z == targetDestination.z)
         {
@@ -152,7 +158,16 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void investigating()
     {
-        Debug.Log("Investigating location: " + targetDestination);
+        
+        
+        if ((targetDestination - gameObject.transform.position).magnitude < 3)
+        {
+
+            Vector3 targetDir = targetDestination;
+            targetDir.y = gameObject.transform.position.y;
+            gameObject.transform.LookAt(targetDir);
+            targetDestination = gameObject.transform.position;
+        }
     }
 
     /// <summary>
@@ -184,7 +199,7 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void detection()
     {
-        CapsuleCollider playerCapColl = target.GetComponent<CapsuleCollider>();
+        
         Vector3 heightAdjustment = new Vector3(0, playerCapColl.center.y + playerCapColl.height / 2,0);
         //gets dot product to determine if facing player
         Vector3 targetDir = target.transform.position + heightAdjustment - transform.position;
@@ -203,7 +218,16 @@ public class Enemy : MonoBehaviour {
 
                 if (hit.transform.gameObject.tag == "Player")
                 {
-                    Debug.Log("player spotted");
+                    discoverProgress += Time.deltaTime;
+                    Debug.Log(discoverProgress);
+                    if (discoverProgress >= discoverDelay)
+                    {
+                        gameManager.CurrState = GameManager.States.Lost;
+                    }
+                }
+                else
+                {
+                    discoverProgress = 0;
                 }
 
         }
@@ -211,9 +235,17 @@ public class Enemy : MonoBehaviour {
 
     }
 
-    public void investigateNoise(Vector3 noiseLocation)
+
+    /// <summary>
+    /// Investigates a location
+    /// </summary>
+    /// <param name="noiseLocation"></param>
+    public void investigateLocation(Vector3 noiseLocation)
     {
         currentState = EnemyState.Investigating;
+
+        //Adding 1 to the Investigating Count in Game Manager
+        gameManager.UpdateTrack(1, 1);
         targetDestination = noiseLocation;
     }
 }

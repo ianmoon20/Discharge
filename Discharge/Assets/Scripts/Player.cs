@@ -41,7 +41,7 @@ public class Player : MonoBehaviour {
 	void OnTriggerStay(Collider c){
 		if (c.gameObject.tag == "Enemy") {
             Enemy enemy = c.gameObject.GetComponent<Enemy>();
-            //enemy.investigateNoise(this.gameObject.transform.position);
+            enemy.investigateLocation(this.gameObject.transform.position);
 		}
 	}
 }

@@ -35,15 +35,20 @@ public class GameManager : MonoBehaviour {
 
     //Enum of our game states
     public enum States { Playing, Won, Lost };
+    public enum AudioStates { Hidden, Discovered, Chased };
+
+    private int[] enemyStateCount;
 
     //Property with Getter and Setter
     private States currState;
-
+    
     public States CurrState
     {
         get { return currState; }
         set { currState = value; }
     }
+
+    private AudioTrack audioTrack;
 
     //Reference to the player
     GameObject player;
@@ -96,9 +101,22 @@ public class GameManager : MonoBehaviour {
         //No level timer for the first scene (Main Menu probably)
         levelTimer = -1;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void Start()
+    {
+        audioTrack = GetComponent<AudioTrack>();
+
+        enemyStateCount = new int[audioTrack.TrackSize];
+        for (int i = 0; i < enemyStateCount.Length; i++)
+        {
+            enemyStateCount[i] = 0;
+        }
+
+        Debug.Log(enemyStateCount);
+    }
+
+    // Update is called once per frame
+    void Update () {
         //If current State is 'Lost'
         if (currState == States.Lost)
         {
@@ -147,7 +165,27 @@ public class GameManager : MonoBehaviour {
 	}
 
     void LoadScene(int level) {
+        enemyStateCount = new int[audioTrack.TrackSize];
+        for (int i = 0; i < enemyStateCount.Length; i++)
+        {
+            enemyStateCount[i] = 0;
+        }
+
         //Loading the Scene at the passed in index
         SceneManager.LoadScene(scenes[level]);
+    }
+
+    //Keeping track of how many enemies are in each state
+    public void UpdateTrack(int index, int modifier) {
+        enemyStateCount[index] += modifier;
+
+        if(enemyStateCount[2] >= 1)
+        {
+            audioTrack.CurrState = AudioTrack.State.t3;
+        } else if(enemyStateCount[1] >= 1) {
+            audioTrack.CurrState = AudioTrack.State.t2;
+        } else {
+            audioTrack.CurrState = AudioTrack.State.t1;
+        }
     }
 }
