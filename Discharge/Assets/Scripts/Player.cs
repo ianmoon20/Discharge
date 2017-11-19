@@ -27,7 +27,9 @@ public class Player : MonoBehaviour {
 		crouching = tpc.Crouching;
 		sprinting = tpuc.Sprinting;
 
-		if (crouching) {
+		if(tpc.M_ForwardAmount <= 0){
+			noiseBubble.radius = 0;
+		}else if (crouching) {
 			noiseBubble.radius = crouchRadius;
 		} else if (sprinting) {
 			noiseBubble.radius = sprintRadius;
