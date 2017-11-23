@@ -52,12 +52,16 @@ public class Enemy : MonoBehaviour {
     private float numShotsFired;
 
     //floats for how far enemy sweeps for player
-    private float sweepAngle;
-    private float sweepProgress;
+    private Quaternion sweepAngle;
+    private Quaternion sweepProgress;
 
     //floats to reactivate a disaled enemy
     private float reactivateTime;
     private float reactivateProgress;
+
+    //floats for giving up investigation
+    private float investigateTime;
+    private float investigateProgress;
 
     //getters and setters
     public float MoveSpeed { get { return moveSpeed; } }
@@ -86,6 +90,12 @@ public class Enemy : MonoBehaviour {
         target = GameObject.FindGameObjectsWithTag("Player")[0];
         discoverDelay = 5f;
         playerCapColl = target.GetComponent<CapsuleCollider>();
+        sweepProgress = gameObject.transform.rotation;
+        sweepAngle = Quaternion.AngleAxis(360, Vector3.up); ;
+        reactivateProgress = 0;
+        reactivateTime = 2;
+        investigateTime = 5;
+        investigateProgress = 0;
 
     }
 	
@@ -118,7 +128,7 @@ public class Enemy : MonoBehaviour {
 
         detection();
 
-        setDestination();
+        
 	}
 
     /// <summary>
@@ -136,7 +146,7 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void patrolling()
     {
-        Debug.Log(targetDestination);
+        
         //check if x and z are correct
         if(gameObject.transform.position.x == targetDestination.x && gameObject.transform.position.z == targetDestination.z)
         {
@@ -151,6 +161,8 @@ public class Enemy : MonoBehaviour {
             }
             targetDestination = path[pathIndex];
         }
+
+        setDestination();
     }
 
     /// <summary>
@@ -168,7 +180,16 @@ public class Enemy : MonoBehaviour {
             gameObject.transform.LookAt(targetDir);
             targetDestination = gameObject.transform.position;
         }
-    }
+        if (gameObject.transform.position.x == targetDestination.x && gameObject.transform.position.z == targetDestination.z)
+        {
+            investigateProgress += Time.deltaTime;
+            if(investigateProgress > investigateTime)
+            {
+                investigateProgress = 0;
+                currentState = EnemyState.Patrolling;
+            }
+        }
+   }
 
     /// <summary>
     /// Behavior for chasing state
@@ -183,6 +204,7 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void sweeping()
     {
+       
 
     }
 
@@ -191,6 +213,13 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void disabled()
     {
+        targetDestination = gameObject.transform.position;
+        reactivateProgress += Time.deltaTime;
+        
+        if(reactivateProgress >= reactivateTime)
+        {
+            currentState = EnemyState.Patrolling;
+        }
 
     }
 
@@ -219,7 +248,7 @@ public class Enemy : MonoBehaviour {
                 if (hit.transform.gameObject.tag == "Player")
                 {
                     discoverProgress += Time.deltaTime;
-                    Debug.Log(discoverProgress);
+                    
                     if (discoverProgress >= discoverDelay)
                     {
                         gameManager.CurrState = GameManager.States.Lost;
@@ -247,5 +276,13 @@ public class Enemy : MonoBehaviour {
         //Adding 1 to the Investigating Count in Game Manager
         gameManager.UpdateTrack(1, 1);
         targetDestination = noiseLocation;
+    }
+
+    /// <summary>
+    /// sets enemy state to disabled
+    /// </summary>
+    public void disableEnemy()
+    {
+        currentState = EnemyState.Disabled;
     }
 }
