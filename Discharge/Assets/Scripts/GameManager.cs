@@ -4,10 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
-
-    //Setting up the singleton
-    public static GameManager instance = null;
-    
     //List of scenes the gameManager has to go through
     public List<string> scenes;
 
@@ -58,9 +54,8 @@ public class GameManager : MonoBehaviour {
     List<GameObject> enemyList;
     List<Enemy> enemyScripts;
 
-    //List of all the lights on the scene
-    List<GameObject> lightsList;
-    List<Lights> lightScripts;
+    //Array of all the lights on the scene
+    private Light[] lights;
 
     //Time to complete the level
     float maxTimer;
@@ -68,31 +63,8 @@ public class GameManager : MonoBehaviour {
     //Time left to complete the level
     float levelTimer;
 
-    //Called before ANY Start method
-    void Awake() {
-        //Instantiate the Game Manager if their isn't one
-        if(instance == null)
-        {
-            instance = this;
-        }
-
-        //Destroy the Game Manager if their is one that isn't this one
-        //Prevents numerous Game Managers when reloading menus
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-
-        //Telling Unity to let us keep our nice things
-        DontDestroyOnLoad(gameObject);
-
-        //Initializing the game
-        InitGame();
-    }
-
-    //Initializes the gameManager for the level
-    //Should function properly for the Playtest
-    void InitGame() {
+    private void Start()
+    {
         currState = States.Playing;
 
         //Setting scene to the first
@@ -100,10 +72,11 @@ public class GameManager : MonoBehaviour {
 
         //No level timer for the first scene (Main Menu probably)
         levelTimer = -1;
-    }
 
-    private void Start()
-    {
+        lights = FindObjectsOfType(typeof(Light)) as Light[];
+        player = GameObject.FindGameObjectsWithTag("Player")[0];
+        playerScript = player.GetComponent<Player>();
+
         audioTrack = GetComponent<AudioTrack>();
 
         enemyStateCount = new int[audioTrack.TrackSize];
@@ -112,7 +85,7 @@ public class GameManager : MonoBehaviour {
             enemyStateCount[i] = 0;
         }
 
-        Debug.Log(enemyStateCount);
+        Debug.Log(enemyStateCount.Length);
     }
 
     // Update is called once per frame
@@ -122,6 +95,43 @@ public class GameManager : MonoBehaviour {
         {
             //Restart the level
             LoadScene(sceneIndex);
+        }
+
+        //Checking to see if there is a light
+        if (lights.Length >= 1)
+        {
+            //Going through each light
+            foreach(Light light in lights)
+            {
+                bool inLight = false;
+
+                //Making sure the light is on before testing
+                if (light.enabled == true)
+                {
+                    //Checking a certain distance (can change - just a placeholder)
+                    if (Vector3.Distance(light.transform.position, player.transform.position) <= 20)
+                    {
+                        //Debug.Log("Distance passed");
+                        RaycastHit hit;
+
+                        Debug.DrawLine(player.transform.position, light.transform.position, Color.green);
+
+                        //Checking to see if anything is in between the light and the position
+                        if (Physics.Linecast(player.transform.position, light.transform.position, out hit))
+                        {
+                            Debug.Log(hit.transform.tag);
+                            //If the player is hit, nothing is in the way
+                            if (hit.collider.gameObject.tag == "Player")
+                            {
+                                //Set the player to not being lit
+                                inLight = false;
+                            }
+                        }
+                    }
+                }
+
+                playerScript.IsLit = inLight;
+            }
         }
 
         //If current State is 'Won'
