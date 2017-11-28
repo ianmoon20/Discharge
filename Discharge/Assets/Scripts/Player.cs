@@ -52,7 +52,7 @@ public class Player : MonoBehaviour {
             RaycastHit hit;
 
             //Checking to see if anything is in between the light and the position
-            if (Physics.Raycast(gameObject.transform.position, gameObject.transform.forward, out hit))
+            if (Physics.Raycast(gameObject.transform.position, gameObject.transform.forward, out hit, 2f))
             {
                 Debug.Log(hit.transform.tag);
                 //If the player is hit, nothing is in the way

@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour {
                 bool inLight = false;
 
                 //Making sure the light is on before testing
-                if (light.enabled == true)
+                if (light.enabled == true && light.type != LightType.Directional)
                 {
                     //Checking a certain distance (can change - just a placeholder)
                     if (Vector3.Distance(light.transform.position, player.transform.position) <= 20)
@@ -114,17 +114,19 @@ public class GameManager : MonoBehaviour {
                         //Debug.Log("Distance passed");
                         RaycastHit hit;
 
-                        Debug.DrawLine(player.transform.position, light.transform.position, Color.green);
+                        Vector3 playerPos = new Vector3(player.transform.position.x, player.transform.position.y + .75f, player.transform.position.z);
+
+                        Debug.DrawRay(light.transform.position, light.transform.forward * 10, Color.green);
 
                         //Checking to see if anything is in between the light and the position
-                        if (Physics.Linecast(player.transform.position, light.transform.position, out hit))
+                        if (Physics.Raycast(light.transform.position, light.transform.forward, out hit))
                         {
                             Debug.Log(hit.transform.tag);
                             //If the player is hit, nothing is in the way
                             if (hit.collider.gameObject.tag == "Player")
                             {
                                 //Set the player to not being lit
-                                inLight = false;
+                                inLight = true;
                             }
                         }
                     }
