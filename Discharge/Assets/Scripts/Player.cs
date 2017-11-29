@@ -11,7 +11,17 @@ public class Player : MonoBehaviour {
 	private bool crouching = false;
 	private SphereCollider noiseBubble;
 
-	[SerializeField] float crouchRadius = 5;
+    //Property for whether the player is in light or not
+    public bool isLit;
+
+    public bool IsLit
+    {
+        get { return isLit; }
+        set { isLit = value; }
+    }
+
+
+    [SerializeField] float crouchRadius = 5;
 	[SerializeField] float walkRadius = 10;
 	[SerializeField] float sprintRadius = 25;
 
@@ -37,8 +47,22 @@ public class Player : MonoBehaviour {
 			noiseBubble.radius = walkRadius;
 		}
 
-        
-	}
+        if (Input.GetButtonDown("Fire1"))
+        {
+            RaycastHit hit;
+
+            //Checking to see if anything is in between the light and the position
+            if (Physics.Raycast(gameObject.transform.position, gameObject.transform.forward, out hit, 2f))
+            {
+                Debug.Log(hit.transform.tag);
+                //If the player is hit, nothing is in the way
+                if (hit.transform.gameObject.tag == "lightBox")
+                {
+                    hit.transform.GetComponent<Lights>().IsEnabled = false;
+                }
+            }
+        }
+    }
 
 	void OnTriggerStay(Collider c){
 		if (c.gameObject.tag == "Enemy") {

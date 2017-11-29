@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - GameManaager
+  - lightBox
   layers:
   - Default
   - TransparentFX
