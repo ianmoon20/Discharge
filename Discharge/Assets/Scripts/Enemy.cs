@@ -63,6 +63,8 @@ public class Enemy : MonoBehaviour {
     private float investigateTime;
     private float investigateProgress;
 
+    
+
     //getters and setters
     public float MoveSpeed { get { return moveSpeed; } }
     public Vector3 StartLocation { get { return startLocation; } }
@@ -126,10 +128,25 @@ public class Enemy : MonoBehaviour {
 
         }
 
-        detection();
+        //moved detection up here so it can be called without progressing the timer
+        if (detection())
+        {
+            discoverProgress += Time.deltaTime;
 
-        
-	}
+            //if timer completes, starts chasing.
+            if (discoverProgress >= discoverDelay)
+            {
+                currentState = EnemyState.Chasing;
+            }
+        }
+        else
+        {
+            discoverProgress = 0;
+        }
+
+
+
+    }
 
     /// <summary>
     /// Sets the enemy navigation target
@@ -170,8 +187,8 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void investigating()
     {
-        
-        
+
+
         if ((targetDestination - gameObject.transform.position).magnitude < 3)
         {
 
@@ -179,14 +196,17 @@ public class Enemy : MonoBehaviour {
             targetDir.y = gameObject.transform.position.y;
             gameObject.transform.LookAt(targetDir);
             targetDestination = gameObject.transform.position;
-        }
-        if (gameObject.transform.position.x == targetDestination.x && gameObject.transform.position.z == targetDestination.z)
-        {
-            investigateProgress += Time.deltaTime;
-            if(investigateProgress > investigateTime)
+
+            if (!detection())
             {
-                investigateProgress = 0;
-                currentState = EnemyState.Patrolling;
+
+
+                investigateProgress += Time.deltaTime;
+                if (investigateProgress > investigateTime)
+                {
+                    investigateProgress = 0;
+                    currentState = EnemyState.Patrolling;
+                }
             }
         }
    }
@@ -196,8 +216,25 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void chasing()
     {
+        //moves towards target
+        targetDestination = target.transform.position();
+        
+        if (!detection())
+        {
+            currentState = EnemyState.Investigating();
+        }
 
-    }
+        //if close to enemy, stops moving and looks at them.
+        if ((targetDestination - gameObject.transform.position).magnitude < 3)
+            {
+
+                Vector3 targetDir = targetDestination;
+                targetDir.y = gameObject.transform.position.y;
+                gameObject.transform.LookAt(targetDir);
+                targetDestination = gameObject.transform.position;
+            }
+
+        }
 
     /// <summary>
     /// Behavior for sweeping state
@@ -213,6 +250,8 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void disabled()
     {
+
+        //reactivates enemy if enough time passes
         targetDestination = gameObject.transform.position;
         reactivateProgress += Time.deltaTime;
         
@@ -226,7 +265,7 @@ public class Enemy : MonoBehaviour {
     /// <summary>
     /// Method for recognizing where the player is.
     /// </summary>
-    private void detection()
+    private bool detection()
     {
         
         Vector3 heightAdjustment = new Vector3(0, playerCapColl.center.y + playerCapColl.height / 2,0);
@@ -247,20 +286,13 @@ public class Enemy : MonoBehaviour {
 
                 if (hit.transform.gameObject.tag == "Player")
                 {
-                    discoverProgress += Time.deltaTime;
                     
-                    if (discoverProgress >= discoverDelay)
-                    {
-                        gameManager.CurrState = GameManager.States.Lost;
-                    }
+                    return true;
                 }
-                else
-                {
-                    discoverProgress = 0;
-                }
+                
 
         }
-
+        return false;
 
     }
 
@@ -271,7 +303,12 @@ public class Enemy : MonoBehaviour {
     /// <param name="noiseLocation"></param>
     public void investigateLocation(Vector3 noiseLocation)
     {
-        currentState = EnemyState.Investigating;
+        //only sets investigation if not actively chasing enemy
+        if(currentState != EnemyState.Chasing)
+        {
+            currentState = EnemyState.Investigating;
+        }
+        
 
         //Adding 1 to the Investigating Count in Game Manager
         gameManager.UpdateTrack(1, 1);
