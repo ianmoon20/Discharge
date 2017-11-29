@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour {
     private GameObject target;
 
     //reference to player capsule collider
-    private CapsuleCollider playerCapColl; 
+    private CapsuleCollider playerCapColl;
 
     //the current state the enemy is in
     private EnemyState currentState;
@@ -45,11 +45,14 @@ public class Enemy : MonoBehaviour {
     //The enemys current destination
     private Vector3 targetDestination;
 
-    //floats for shooting at player
-    private float shotCooldown;
-    private float cooldownProgress;
-    //float for stormtrooper aiming
-    private float numShotsFired;
+    [SerializeField]float shotCooldown = 3.0f; //Cooldown for shots
+    private float cooldownProgress = 0.0f; //Progress of current bullet cooldown
+    private int numShotsFired = 0; //Number of shows fired for stormtrooper aiming
+    private Vector3 oldBulletPos; //Old position of the bullet
+    private Vector3 targetPosition; //Position of the target
+    [SerializeField]float bulletSpeed = 10.0f; //Speed of the bullet
+    private bool isFiring = false; //If the enemy is currently firing
+    private LineRenderer lineRenderer; //Renders the laser line
 
     //floats for how far enemy sweeps for player
     private Quaternion sweepAngle;
@@ -96,16 +99,15 @@ public class Enemy : MonoBehaviour {
         reactivateTime = 2;
         investigateTime = 5;
         investigateProgress = 0;
-
+		lineRenderer = gameObject.GetComponent<LineRenderer>();
+		lineRenderer.enabled = false;
     }
-	
+
 	// Update is called once per frame
 	void Update () {
-
         //Switch statement to call correct behavior
         switch (currentState)
         {
-
             //behavior is placed in methods for etter organization
             case EnemyState.Patrolling:
                 patrolling();
@@ -128,7 +130,16 @@ public class Enemy : MonoBehaviour {
 
         detection();
 
-        
+        if(isFiring) {
+			shoot();
+			cooldownProgress += Time.deltaTime;
+		}
+
+		if(cooldownProgress >= shotCooldown) {
+			lineRenderer.enabled = false;
+			isFiring = false;
+			cooldownProgress = 0.0f;
+		}
 	}
 
     /// <summary>
@@ -146,11 +157,10 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void patrolling()
     {
-        
         //check if x and z are correct
         if(gameObject.transform.position.x == targetDestination.x && gameObject.transform.position.z == targetDestination.z)
         {
-            
+
             if (pathIndex < path.Length - 1)
             {
                 pathIndex++;
@@ -170,8 +180,6 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void investigating()
     {
-        
-        
         if ((targetDestination - gameObject.transform.position).magnitude < 3)
         {
 
@@ -204,7 +212,7 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void sweeping()
     {
-       
+
 
     }
 
@@ -215,7 +223,7 @@ public class Enemy : MonoBehaviour {
     {
         targetDestination = gameObject.transform.position;
         reactivateProgress += Time.deltaTime;
-        
+
         if(reactivateProgress >= reactivateTime)
         {
             currentState = EnemyState.Patrolling;
@@ -228,42 +236,49 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void detection()
     {
-        
-        Vector3 heightAdjustment = new Vector3(0, playerCapColl.center.y + playerCapColl.height / 2,0);
+        Vector3 heightAdjustment = new Vector3(0, playerCapColl.center.y + playerCapColl.height / 2, 0);
         //gets dot product to determine if facing player
-        Vector3 targetDir = target.transform.position + heightAdjustment - transform.position;
-        float dot = Vector3.Dot(transform.forward, targetDir.normalized);
+        Vector3 targetDir = (target.transform.position + heightAdjustment - transform.position).normalized;
+        float dot = Vector3.Dot(transform.forward, targetDir);
 
         float angle = Mathf.Rad2Deg * Mathf.Acos(dot);
 
         if (angle < 30)
         {
-
-
             //raycast to see if there are obstacles
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, targetDir.normalized, out hit, 10.0f))
+            if (Physics.Raycast(transform.position, targetDir, out hit, 10.0f))
 
                 if (hit.transform.gameObject.tag == "Player")
                 {
                     discoverProgress += Time.deltaTime;
-                    
+
                     if (discoverProgress >= discoverDelay)
                     {
-                        gameManager.CurrState = GameManager.States.Lost;
+                        if(isFiring == false) {
+							numShotsFired++;
+							oldBulletPos = transform.position;
+							lineRenderer.enabled = true;
+							isFiring = true;
+
+							Vector3 randomDeviation = Vector3.zero;
+
+							if(numShotsFired <= 3) {
+								randomDeviation = (transform.up * Random.Range(-0.5f, 0.5f)) + (transform.right * Random.Range(-0.5f, 0.5f));
+							}
+
+							targetPosition = ((target.transform.position + target.transform.up - transform.position)).normalized + randomDeviation;
+                        }
                     }
                 }
                 else
                 {
                     discoverProgress = 0;
+                    numShotsFired = 0;
                 }
-
         }
-
-
     }
-
 
     /// <summary>
     /// Investigates a location
@@ -284,5 +299,27 @@ public class Enemy : MonoBehaviour {
     public void disableEnemy()
     {
         currentState = EnemyState.Disabled;
+    }
+
+    public void shoot()
+    {
+		RaycastHit hit;
+		Vector3 newPos = oldBulletPos + targetPosition * bulletSpeed * Time.deltaTime;
+		Vector3 bulletDir = newPos - oldBulletPos;
+
+		Physics.Raycast(oldBulletPos, bulletDir, out hit, 1);
+		lineRenderer.SetPosition(0, oldBulletPos);
+		lineRenderer.SetPosition(1, newPos + bulletDir);
+
+		if(hit.collider != null) {
+			lineRenderer.enabled = false;
+
+			if(hit.transform.gameObject.tag == "Player")
+				gameManager.CurrState = GameManager.States.Lost;
+		}
+
+		else {
+			oldBulletPos = newPos;
+		}
     }
 }
