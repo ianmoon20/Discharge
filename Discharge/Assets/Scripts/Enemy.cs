@@ -138,6 +138,8 @@ public class Enemy : MonoBehaviour {
         if (detection())
         {
             discoverProgress += Time.deltaTime;
+			currentState = EnemyState.Investigating;
+			targetDestination = target.transform.position;
 
             //if timer completes, starts chasing.
             if (discoverProgress >= discoverDelay)
