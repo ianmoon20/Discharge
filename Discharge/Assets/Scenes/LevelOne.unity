@@ -38,7 +38,8 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.0040578954, g: 0.00022179405, b: 0.00000005570135,
+    a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -23261,7 +23262,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh12178
+  m_Name: pb_Mesh12170
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -42066,7 +42067,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh12154
+  m_Name: pb_Mesh12146
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -42214,7 +42215,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh12096
+  m_Name: pb_Mesh12512
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -43863,7 +43864,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh12898
+  m_Name: pb_Mesh12890
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -44285,11 +44286,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1220492985}
     m_Modifications:
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4241250680729854, guid: 8e31dc3e3412c1b419b446380e107453, type: 2}
       propertyPath: m_LocalPosition.x
       value: 59.92
@@ -44325,41 +44321,6 @@ Prefab:
     - target: {fileID: 1433141939845534, guid: 8e31dc3e3412c1b419b446380e107453, type: 2}
       propertyPath: m_Name
       value: Enemy (6)
-      objectReference: {fileID: 0}
-    - target: {fileID: 195026792393024710, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: m_AutoBraking
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[0].z
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[1].z
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[0].y
-      value: 8.223
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[1].y
-      value: 8.223
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[0].x
-      value: 59.92
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[1].x
-      value: 59.92
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e31dc3e3412c1b419b446380e107453, type: 2}
@@ -70286,11 +70247,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1220492985}
     m_Modifications:
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.size
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 4241250680729854, guid: 8e31dc3e3412c1b419b446380e107453, type: 2}
       propertyPath: m_LocalPosition.x
       value: 22.38
@@ -70326,111 +70282,6 @@ Prefab:
     - target: {fileID: 1433141939845534, guid: 8e31dc3e3412c1b419b446380e107453, type: 2}
       propertyPath: m_Name
       value: Enemy (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[0].x
-      value: 22.38
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[0].y
-      value: 8.215
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[0].z
-      value: 51.97
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[1].z
-      value: 51.97
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[1].y
-      value: 8.215
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[1].x
-      value: 68.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[2].x
-      value: 68.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[2].y
-      value: 5.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[2].z
-      value: 70.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[3].x
-      value: 65.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[3].y
-      value: 5.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[3].z
-      value: 70.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[4].x
-      value: 65.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[4].y
-      value: 2.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[4].z
-      value: 62.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[5].x
-      value: 58.24
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[6].x
-      value: 29.43
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[5].y
-      value: 2.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[5].z
-      value: 68.57
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[6].y
-      value: 2.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294737897618752, guid: 8e31dc3e3412c1b419b446380e107453,
-        type: 2}
-      propertyPath: setPath.Array.data[6].z
-      value: 68.57
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e31dc3e3412c1b419b446380e107453, type: 2}

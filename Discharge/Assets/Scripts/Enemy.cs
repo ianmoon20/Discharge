@@ -45,14 +45,15 @@ public class Enemy : MonoBehaviour {
     //The enemys current destination
     private Vector3 targetDestination;
 
+    [SerializeField]GameObject laser;
     [SerializeField]float shotCooldown = 3.0f; //Cooldown for shots
     private float cooldownProgress = 0.0f; //Progress of current bullet cooldown
     private int numShotsFired = 0; //Number of shows fired for stormtrooper aiming
-    private Vector3 oldBulletPos; //Old position of the bullet
-    private Vector3 targetPosition; //Position of the target
+    private List<Vector3> oldBulletPos; //Old position of the bullet
+    private List<Vector3> targetPositions; //Position of the target
     [SerializeField]float bulletSpeed = 10.0f; //Speed of the bullet
     private bool isFiring = false; //If the enemy is currently firing
-    private LineRenderer lineRenderer; //Renders the laser line
+    private List<GameObject> lasers; //Renders the laser line
 
     private bool[] audioSwitch = {false, false};
 
@@ -103,8 +104,9 @@ public class Enemy : MonoBehaviour {
         reactivateTime = 2;
         investigateTime = 5;
         investigateProgress = 0;
-		lineRenderer = gameObject.GetComponent<LineRenderer>();
-		lineRenderer.enabled = false;
+		oldBulletPos = new List<Vector3>();
+		targetPositions = new List<Vector3>();
+		lasers = new List<GameObject>();
     }
 
 	// Update is called once per frame
@@ -157,15 +159,14 @@ public class Enemy : MonoBehaviour {
         }
 
         if(isFiring) {
-			shoot();
 			cooldownProgress += Time.deltaTime;
+			if(cooldownProgress >= shotCooldown) {
+				fire();
+				cooldownProgress = 0.0f;
+			}
 		}
 
-		if(cooldownProgress >= shotCooldown) {
-			lineRenderer.enabled = false;
-			isFiring = false;
-			cooldownProgress = 0.0f;
-		}
+		simulateProjectiles();
 	}
 
     /// <summary>
@@ -246,6 +247,7 @@ public class Enemy : MonoBehaviour {
         {
 			audioSwitch[1] = false;
 			gameManager.UpdateTrack(2, -1);
+			isFiring = false;
             currentState = EnemyState.Investigating;
         }
 
@@ -261,19 +263,7 @@ public class Enemy : MonoBehaviour {
 
 		if(currentState == EnemyState.Chasing)
 		{
-			if(isFiring == false) {
-				numShotsFired++;
-				oldBulletPos = transform.position;
-				lineRenderer.enabled = true;
-				isFiring = true;
-
-				Vector3 randomDeviation = Vector3.zero;
-
-				if(numShotsFired <= 3) {
-					randomDeviation = (transform.up * Random.Range(-0.5f, 0.5f)) + (transform.right * Random.Range(-0.5f, 0.5f));
-				}
-				targetPosition = ((target.transform.position + playerCapColl.center - transform.position)).normalized + randomDeviation;
-			}
+			isFiring = true;
 
 		}
 		setDestination();
@@ -368,25 +358,49 @@ public class Enemy : MonoBehaviour {
         currentState = EnemyState.Disabled;
     }
 
-    public void shoot()
+    public void fire()
     {
-		RaycastHit hit;
-		Vector3 newPos = oldBulletPos + targetPosition * bulletSpeed * Time.deltaTime;
-		Vector3 bulletDir = newPos - oldBulletPos;
+		GameObject lr = (GameObject)Instantiate(laser);
+		lasers.Add(lr);
+		oldBulletPos.Add(transform.position);
+		numShotsFired++;
 
-		Physics.Raycast(oldBulletPos, bulletDir, out hit, 1);
-		lineRenderer.SetPosition(0, oldBulletPos);
-		lineRenderer.SetPosition(1, newPos + bulletDir);
+		Vector3 randomDeviation = Vector3.zero;
 
-		if(hit.collider != null) {
-			lineRenderer.enabled = false;
-
-			if(hit.transform.gameObject.tag == "Player")
-				gameManager.CurrState = GameManager.States.Lost;
+		if(numShotsFired <= 3) {
+			randomDeviation = (transform.up * Random.Range(-0.5f, 0.5f)) + (transform.right * Random.Range(-0.5f, 0.5f));
 		}
 
-		else {
-			oldBulletPos = newPos;
+		targetPositions.Add(((target.transform.position +
+								 playerCapColl.center - transform.position))
+								 .normalized + randomDeviation);
+    }
+
+    public void simulateProjectiles()
+    {
+		for(int i = 0; i < lasers.Count; i++)
+		{
+			RaycastHit hit;
+			Vector3 newPos = oldBulletPos[i] + targetPositions[i] * bulletSpeed * Time.deltaTime;
+			Vector3 bulletDir = newPos - oldBulletPos[i];
+
+			Physics.Raycast(oldBulletPos[i], bulletDir, out hit, 1);
+			lasers[i].GetComponent<LineRenderer>().SetPosition(0, oldBulletPos[i]);
+			lasers[i].GetComponent<LineRenderer>().SetPosition(1, newPos + bulletDir);
+
+			if(hit.collider != null) {
+				Destroy(lasers[i]);
+				lasers.RemoveAt(i);
+				oldBulletPos.RemoveAt(i);
+				targetPositions.RemoveAt(i);
+
+				if(hit.transform.gameObject.tag == "Player")
+					gameManager.CurrState = GameManager.States.Lost;
+			}
+
+			else {
+				oldBulletPos[i] = newPos;
+			}
 		}
     }
 }
