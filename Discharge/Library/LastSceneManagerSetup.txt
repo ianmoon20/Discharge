@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Scenes/GioTestScene.unity
-=======
-- path: Assets/Scenes/LevelTwo.unity
->>>>>>> 511d807e234439b878f02abb0ac731a4c59d200a
+- path: Assets/Scenes/jacksonTestScene.unity
   isLoaded: 1
   isActive: 1
