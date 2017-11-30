@@ -24,7 +24,7 @@ public class AudioTrack : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+	void Awake() {
 		tracks = GetComponents<AudioSource>();
 		tracks[0].loop = true;
 		tracks[0].Play();

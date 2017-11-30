@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
 
     //Property with Getter and Setter
     private States currState;
-    
+
     public States CurrState
     {
         get { return currState; }
@@ -190,7 +190,7 @@ public class GameManager : MonoBehaviour {
     //Keeping track of how many enemies are in each state
     public void UpdateTrack(int index, int modifier) {
         enemyStateCount[index] += modifier;
-
+		Debug.Log(enemyStateCount[1]);
         if(enemyStateCount[2] >= 1)
         {
             audioTrack.CurrState = AudioTrack.State.t3;

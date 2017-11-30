@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour {
     private CapsuleCollider playerCapColl;
 
     //the current state the enemy is in
-    private EnemyState currentState;
+    public EnemyState currentState;
 
     //the enemys initial state
     private EnemyState initialState;
@@ -54,6 +54,8 @@ public class Enemy : MonoBehaviour {
     private bool isFiring = false; //If the enemy is currently firing
     private LineRenderer lineRenderer; //Renders the laser line
 
+    private bool[] audioSwitch = {false, false};
+
     //floats for how far enemy sweeps for player
     private Quaternion sweepAngle;
     private Quaternion sweepProgress;
@@ -65,6 +67,8 @@ public class Enemy : MonoBehaviour {
     //floats for giving up investigation
     private float investigateTime;
     private float investigateProgress;
+
+
 
     //getters and setters
     public float MoveSpeed { get { return moveSpeed; } }
@@ -101,6 +105,8 @@ public class Enemy : MonoBehaviour {
         investigateProgress = 0;
 		lineRenderer = gameObject.GetComponent<LineRenderer>();
 		lineRenderer.enabled = false;
+		//audioSwitch[0] = false;
+		//audioSwitch[1] = false;
     }
 
 	// Update is called once per frame
@@ -128,7 +134,27 @@ public class Enemy : MonoBehaviour {
 
         }
 
-        detection();
+        //moved detection up here so it can be called without progressing the timer
+        if (detection())
+        {
+            discoverProgress += Time.deltaTime;
+
+            //if timer completes, starts chasing.
+            if (discoverProgress >= discoverDelay)
+            {
+				if(audioSwitch[1] == false) {
+					audioSwitch[1] = true;
+					gameManager.UpdateTrack(2, 1);
+				}
+
+                currentState = EnemyState.Chasing;
+            }
+        }
+        else
+        {
+            discoverProgress = 0;
+            numShotsFired = 0;
+        }
 
         if(isFiring) {
 			shoot();
@@ -180,6 +206,8 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void investigating()
     {
+
+
         if ((targetDestination - gameObject.transform.position).magnitude < 3)
         {
 
@@ -187,16 +215,24 @@ public class Enemy : MonoBehaviour {
             targetDir.y = gameObject.transform.position.y;
             gameObject.transform.LookAt(targetDir);
             targetDestination = gameObject.transform.position;
-        }
-        if (gameObject.transform.position.x == targetDestination.x && gameObject.transform.position.z == targetDestination.z)
-        {
-            investigateProgress += Time.deltaTime;
-            if(investigateProgress > investigateTime)
+
+            if (!detection())
             {
-                investigateProgress = 0;
-                currentState = EnemyState.Patrolling;
+
+
+                investigateProgress += Time.deltaTime;
+                if (investigateProgress > investigateTime)
+                {
+					audioSwitch[0] = false;
+                    investigateProgress = 0;
+					gameManager.UpdateTrack(1, -1);
+                    currentState = EnemyState.Patrolling;
+                }
             }
         }
+
+        //Adding 1 to the Investigating Count in Game Manager
+        setDestination();
    }
 
     /// <summary>
@@ -205,7 +241,47 @@ public class Enemy : MonoBehaviour {
     private void chasing()
     {
 
-    }
+        //moves towards target
+        targetDestination = target.transform.position;
+
+        if (!detection())
+        {
+			audioSwitch[1] = false;
+			gameManager.UpdateTrack(2, -1);
+            currentState = EnemyState.Investigating;
+        }
+
+        //if close to enemy, stops moving and looks at them.
+        if ((targetDestination - gameObject.transform.position).magnitude < 3)
+            {
+
+                Vector3 targetDir = targetDestination;
+                targetDir.y = gameObject.transform.position.y;
+                gameObject.transform.LookAt(targetDir);
+                targetDestination = gameObject.transform.position;
+            }
+
+		if(currentState == EnemyState.Chasing)
+		{
+			if(isFiring == false) {
+				numShotsFired++;
+				oldBulletPos = transform.position;
+				lineRenderer.enabled = true;
+				isFiring = true;
+
+				Vector3 randomDeviation = Vector3.zero;
+
+				if(numShotsFired <= 3) {
+					randomDeviation = (transform.up * Random.Range(-0.5f, 0.5f)) + (transform.right * Random.Range(-0.5f, 0.5f));
+				}
+
+				targetPosition = ((target.transform.position + target.transform.up - transform.position)).normalized + randomDeviation;
+			}
+
+		}
+		setDestination();
+
+	}
 
     /// <summary>
     /// Behavior for sweeping state
@@ -221,6 +297,8 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void disabled()
     {
+
+        //reactivates enemy if enough time passes
         targetDestination = gameObject.transform.position;
         reactivateProgress += Time.deltaTime;
 
@@ -228,13 +306,14 @@ public class Enemy : MonoBehaviour {
         {
             currentState = EnemyState.Patrolling;
         }
+        setDestination();
 
     }
 
     /// <summary>
     /// Method for recognizing where the player is.
     /// </summary>
-    private void detection()
+    private bool detection()
     {
         Vector3 heightAdjustment = new Vector3(0, playerCapColl.center.y + playerCapColl.height / 2, 0);
         //gets dot product to determine if facing player
@@ -252,32 +331,14 @@ public class Enemy : MonoBehaviour {
 
                 if (hit.transform.gameObject.tag == "Player")
                 {
-                    discoverProgress += Time.deltaTime;
 
-                    if (discoverProgress >= discoverDelay)
-                    {
-                        if(isFiring == false) {
-							numShotsFired++;
-							oldBulletPos = transform.position;
-							lineRenderer.enabled = true;
-							isFiring = true;
-
-							Vector3 randomDeviation = Vector3.zero;
-
-							if(numShotsFired <= 3) {
-								randomDeviation = (transform.up * Random.Range(-0.5f, 0.5f)) + (transform.right * Random.Range(-0.5f, 0.5f));
-							}
-
-							targetPosition = ((target.transform.position + target.transform.up - transform.position)).normalized + randomDeviation;
-                        }
-                    }
+                    return true;
                 }
-                else
-                {
-                    discoverProgress = 0;
-                    numShotsFired = 0;
-                }
+
+
         }
+        return false;
+
     }
 
     /// <summary>
@@ -286,10 +347,19 @@ public class Enemy : MonoBehaviour {
     /// <param name="noiseLocation"></param>
     public void investigateLocation(Vector3 noiseLocation)
     {
-        currentState = EnemyState.Investigating;
+        //only sets investigation if not actively chasing enemy
+        if(currentState != EnemyState.Chasing)
+        {
+			if(audioSwitch[0] == false) {
+				audioSwitch[0] = true;
+				gameManager.UpdateTrack(1, 1);
+			}
 
-        //Adding 1 to the Investigating Count in Game Manager
-        gameManager.UpdateTrack(1, 1);
+            currentState = EnemyState.Investigating;
+        }
+
+
+
         targetDestination = noiseLocation;
     }
 
