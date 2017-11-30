@@ -5,8 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - GameManaager
   - lightBox
+  - GameManager
+  - detectLight
   layers:
   - Default
   - TransparentFX

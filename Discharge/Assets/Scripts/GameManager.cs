@@ -55,7 +55,8 @@ public class GameManager : MonoBehaviour {
     List<Enemy> enemyScripts;
 
     //Array of all the lights on the scene
-    private Light[] lights;
+    private GameObject[] lights;
+    private Light[] lightScripts;
 
     //Time to complete the level
     float maxTimer;
@@ -73,8 +74,13 @@ public class GameManager : MonoBehaviour {
         //No level timer for the first scene (Main Menu probably)
         levelTimer = -1;
 
-        lights = FindObjectsOfType(typeof(Light)) as Light[];
-        player = GameObject.FindGameObjectsWithTag("Player")[0];
+        lights = GameObject.FindGameObjectsWithTag("detectLight");
+        for(int i = 0; i < lights.Length; i++)
+        {
+            lightScripts[i] = lights[i].GetComponent<Light>();
+        }
+
+        player = GameObject.FindGameObjectWithTag("Player");
         playerScript = player.GetComponent<Player>();
 
         audioTrack = GetComponent<AudioTrack>();
@@ -93,14 +99,14 @@ public class GameManager : MonoBehaviour {
         if (currState == States.Lost)
         {
             //Restart the level
-            LoadScene(sceneIndex);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         //Checking to see if there is a light
         if (lights.Length >= 1)
         {
             //Going through each light
-            foreach(Light light in lights)
+            foreach(Light light in lightScripts)
             {
                 bool inLight = false;
 
@@ -112,8 +118,6 @@ public class GameManager : MonoBehaviour {
                     {
                         //Debug.Log("Distance passed");
                         RaycastHit hit;
-
-                        Vector3 playerPos = new Vector3(player.transform.position.x, player.transform.position.y + .75f, player.transform.position.z);
 
                         Debug.DrawRay(light.transform.position, light.transform.forward * 10, Color.green);
 
@@ -148,7 +152,7 @@ public class GameManager : MonoBehaviour {
             }
 
             //Load the scene
-            LoadScene(sceneIndex);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
 
         //If there is a timer...
@@ -174,17 +178,6 @@ public class GameManager : MonoBehaviour {
             currState = States.Playing;
         }
 	}
-
-    void LoadScene(int level) {
-        enemyStateCount = new int[audioTrack.TrackSize];
-        for (int i = 0; i < enemyStateCount.Length; i++)
-        {
-            enemyStateCount[i] = 0;
-        }
-
-        //Loading the Scene at the passed in index
-        SceneManager.LoadScene(scenes[level]);
-    }
 
     //Keeping track of how many enemies are in each state
     public void UpdateTrack(int index, int modifier) {
