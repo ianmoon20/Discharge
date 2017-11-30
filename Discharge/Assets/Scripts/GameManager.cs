@@ -85,7 +85,6 @@ public class GameManager : MonoBehaviour {
             enemyStateCount[i] = 0;
         }
 
-        Debug.Log(enemyStateCount.Length);
     }
 
     // Update is called once per frame
@@ -190,7 +189,6 @@ public class GameManager : MonoBehaviour {
     //Keeping track of how many enemies are in each state
     public void UpdateTrack(int index, int modifier) {
         enemyStateCount[index] += modifier;
-		Debug.Log(enemyStateCount[1]);
         if(enemyStateCount[2] >= 1)
         {
             audioTrack.CurrState = AudioTrack.State.t3;

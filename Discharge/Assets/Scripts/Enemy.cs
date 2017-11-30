@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour {
         startLocation = gameObject.transform.position;
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         target = GameObject.FindGameObjectsWithTag("Player")[0];
-        discoverDelay = 5f;
+        discoverDelay = 3f;
         playerCapColl = target.GetComponent<CapsuleCollider>();
         sweepProgress = gameObject.transform.rotation;
         sweepAngle = Quaternion.AngleAxis(360, Vector3.up); ;
@@ -274,8 +274,7 @@ public class Enemy : MonoBehaviour {
 				if(numShotsFired <= 3) {
 					randomDeviation = (transform.up * Random.Range(-0.5f, 0.5f)) + (transform.right * Random.Range(-0.5f, 0.5f));
 				}
-
-				targetPosition = ((target.transform.position + target.transform.up - transform.position)).normalized + randomDeviation;
+				targetPosition = ((target.transform.position + playerCapColl.center - transform.position)).normalized + randomDeviation;
 			}
 
 		}
