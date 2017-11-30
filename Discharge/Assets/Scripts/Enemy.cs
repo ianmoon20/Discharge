@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour {
         startLocation = gameObject.transform.position;
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         target = GameObject.FindGameObjectsWithTag("Player")[0];
-        discoverDelay = 3f;
+        discoverDelay = 1f;
         playerCapColl = target.GetComponent<CapsuleCollider>();
         sweepProgress = gameObject.transform.rotation;
         sweepAngle = Quaternion.AngleAxis(360, Vector3.up); ;
@@ -105,8 +105,6 @@ public class Enemy : MonoBehaviour {
         investigateProgress = 0;
 		lineRenderer = gameObject.GetComponent<LineRenderer>();
 		lineRenderer.enabled = false;
-		//audioSwitch[0] = false;
-		//audioSwitch[1] = false;
     }
 
 	// Update is called once per frame
@@ -208,8 +206,6 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void investigating()
     {
-
-
         if ((targetDestination - gameObject.transform.position).magnitude < 3)
         {
 
