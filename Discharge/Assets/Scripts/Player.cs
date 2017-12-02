@@ -58,7 +58,7 @@ public class Player : MonoBehaviour {
                 //If the player is hit, nothing is in the way
                 if (hit.transform.gameObject.tag == "lightBox")
                 {
-                    hit.transform.GetComponent<Lights>().IsEnabled = false;
+                    hit.transform.GetComponent<Lights>().IsEnabled = !hit.transform.GetComponent<Lights>().IsEnabled;
                 }
             }
         }

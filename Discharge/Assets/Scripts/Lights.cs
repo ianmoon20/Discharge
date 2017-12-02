@@ -6,9 +6,11 @@ public class Lights : MonoBehaviour {
 
     public List<GameObject> objects;
 
-    private List<Light> lightScripts;
-    private List<Door> doorScripts;
+    private List<Light> lightScripts = new List<Light>();
+    private List<Door> doorScripts = new List<Door>();
 
+
+    private bool prevEnabled;
     private bool isEnabled;
 
     public bool IsEnabled
@@ -21,6 +23,7 @@ public class Lights : MonoBehaviour {
     // Use this for initialization
     void Start () {
         isEnabled = true;
+        prevEnabled = true;
 
         foreach (GameObject gObject in objects)
         {
@@ -38,13 +41,13 @@ public class Lights : MonoBehaviour {
 	void Update () {
 
         //Checking if the box is enabled
-		if(isEnabled == false)
+		if((isEnabled == false && prevEnabled == true) || (isEnabled == true && prevEnabled == false))
         {
             //If it is not..
             foreach(Light light in lightScripts)
             {
                 //disable all lights assosciated with it
-                light.enabled = false;
+                light.enabled = !light.enabled;
             }
 
             //If it is not...
@@ -53,6 +56,8 @@ public class Lights : MonoBehaviour {
                 //Open any closed doors and close any open doors
                 door.ChangeDoorState();
             }
+
+            prevEnabled = isEnabled;
         }
 	}
 }
