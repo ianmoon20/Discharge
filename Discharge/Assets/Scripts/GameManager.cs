@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour {
         levelTimer = -1;
 
         lights = GameObject.FindGameObjectsWithTag("detectLight");
+
         for(int i = 0; i < lights.Length; i++)
         {
             lightScripts[i] = lights[i].GetComponent<Light>();

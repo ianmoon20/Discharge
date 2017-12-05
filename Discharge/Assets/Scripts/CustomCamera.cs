@@ -11,7 +11,7 @@ public class CustomCamera : MonoBehaviour {
 	[SerializeField] float distanceFromPlayer = 1;
 	[SerializeField] float cameraHeight = 1.6f;
 	[SerializeField] float lookAtHeight = 1.2f;
-	private float rotation = 0;
+	[SerializeField] float rotation = 0;
 
 	// Use this for initialization
 	void Start () {
