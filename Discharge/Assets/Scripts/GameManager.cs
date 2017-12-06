@@ -55,8 +55,8 @@ public class GameManager : MonoBehaviour {
     List<Enemy> enemyScripts;
 
     //Array of all the lights on the scene
-    private GameObject[] lights;
-    private Light[] lightScripts;
+    public GameObject[] lights;
+    public Light[] lightScripts;
 
     //Time to complete the level
     float maxTimer;
@@ -75,8 +75,9 @@ public class GameManager : MonoBehaviour {
         levelTimer = -1;
 
         lights = GameObject.FindGameObjectsWithTag("detectLight");
+        lightScripts = new Light[lights.Length];
 
-        for(int i = 0; i < lights.Length; i++)
+        for (int i = 0; i < lights.Length; i++)
         {
             lightScripts[i] = lights[i].GetComponent<Light>();
         }
