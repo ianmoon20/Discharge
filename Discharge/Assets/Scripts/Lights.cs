@@ -24,15 +24,18 @@ public class Lights : MonoBehaviour {
     void Start () {
         isEnabled = true;
         prevEnabled = true;
-
-        foreach (GameObject gObject in objects)
+        if(objects.Count != 0)
         {
-            if(gObject.GetComponent<Light>() != null)
+            foreach (GameObject gObject in objects)
             {
-                lightScripts.Add(gObject.GetComponent<Light>());
-            } else if(gObject.GetComponent<Door>() != null)
-            {
-                doorScripts.Add(gObject.GetComponent<Door>());
+                if (gObject.GetComponent<Light>() != null)
+                {
+                    lightScripts.Add(gObject.GetComponent<Light>());
+                }
+                else if (gObject.GetComponent<Door>() != null)
+                {
+                    doorScripts.Add(gObject.GetComponent<Door>());
+                }
             }
         }
 	}

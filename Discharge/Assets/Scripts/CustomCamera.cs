@@ -21,13 +21,13 @@ public class CustomCamera : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		float turnAmount = CrossPlatformInputManager.GetAxis("Mouse X") * 2.0f;
-		turnAmount *= Time.deltaTime;
-		rotation -= turnAmount;
+		float turnAmountX = CrossPlatformInputManager.GetAxis("Mouse X") * 2.0f;
+		turnAmountX *= Time.deltaTime;
+		rotation += turnAmountX;
 		displacement = new Vector3 (Mathf.Cos (rotation), 0, Mathf.Sin (rotation));
 		displacement = displacement.normalized * distanceFromPlayer;
 		displacement.y = cameraHeight;
-		this.transform.position = player.transform.position + displacement;
+        this.transform.position = player.transform.position + displacement;
 		this.transform.LookAt (player.transform.position + new Vector3(0,lookAtHeight,0));
 	}
 }

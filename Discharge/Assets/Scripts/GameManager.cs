@@ -66,6 +66,8 @@ public class GameManager : MonoBehaviour {
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+
         currState = States.Playing;
 
         //Setting scene to the first
@@ -97,6 +99,8 @@ public class GameManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        bool inLight = false;
+
         //If current State is 'Lost'
         if (currState == States.Lost)
         {
@@ -110,26 +114,37 @@ public class GameManager : MonoBehaviour {
             //Going through each light
             foreach(Light light in lightScripts)
             {
-                bool inLight = false;
-
                 //Making sure the light is on before testing
-                if (light.enabled == true && light.type != LightType.Directional)
+                if (light.enabled == true)
                 {
                     //Checking a certain distance (can change - just a placeholder)
-                    if (Vector3.Distance(light.transform.position, player.transform.position) <= 20)
+                    if (Vector3.Distance(light.transform.position, player.transform.position) <= light.range)
                     {
                         //Debug.Log("Distance passed");
                         RaycastHit hit;
 
-                        Debug.DrawRay(light.transform.position, light.transform.forward * 10, Color.green);
+                        Vector3 targetDir = (player.transform.position + new Vector3(0, .8f, 0)) - light.transform.position;
+                        Debug.DrawRay(light.transform.position, targetDir * light.range, Color.green);
 
                         //Checking to see if anything is in between the light and the position
-                        if (Physics.Raycast(light.transform.position, light.transform.forward, out hit))
+                        if (Physics.Raycast(light.transform.position, targetDir, out hit))
                         {
-                            Debug.Log(hit.transform.tag);
-                            //If the player is hit, nothing is in the way
-                            if (hit.collider.gameObject.tag == "Player")
+                            if(light.type == LightType.Spot)
                             {
+                                if(Vector3.Angle(targetDir, light.transform.forward) < light.spotAngle)
+                                {
+                                    if (hit.collider.gameObject.tag == "Player")
+                                    {
+                                        Debug.Log("Hi Spot");
+                                        //Set the player to not being lit
+                                        inLight = true;
+                                    }
+                                }
+                            }
+                            //If the player is hit and we're a point light, nothing is in the way
+                            else if (hit.collider.gameObject.tag == "Player")
+                            {
+                                Debug.Log("Hi Point");
                                 //Set the player to not being lit
                                 inLight = true;
                             }
