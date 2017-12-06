@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
 - path: Assets/Scenes/LevelFour.unity
-=======
-- path: Assets/Scenes/jacksonTestScene.unity
->>>>>>> 4bf5c7a225d37867f65b67d6dfddce94af026bf5
   isLoaded: 1
   isActive: 1
