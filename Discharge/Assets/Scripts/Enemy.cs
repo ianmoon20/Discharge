@@ -69,6 +69,9 @@ public class Enemy : MonoBehaviour {
     private float investigateTime;
     private float investigateProgress;
 
+    //floats for giving up a chase
+    private float chaseTime;
+    private float chaseProgress;
 
 
     //getters and setters
@@ -85,6 +88,9 @@ public class Enemy : MonoBehaviour {
     public Vector3[] setPath;
     public int initState;
 
+    //The player script for light detection
+    private Player playScript;
+
 	// Use this for initialization
 	void Start () {
         currentState = (EnemyState)initState;
@@ -96,6 +102,7 @@ public class Enemy : MonoBehaviour {
         startLocation = gameObject.transform.position;
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         target = GameObject.FindGameObjectsWithTag("Player")[0];
+        playScript = target.GetComponent<Player>();
         discoverDelay = 1f;
         playerCapColl = target.GetComponent<CapsuleCollider>();
         sweepProgress = gameObject.transform.rotation;
@@ -104,6 +111,8 @@ public class Enemy : MonoBehaviour {
         reactivateTime = 2;
         investigateTime = 5;
         investigateProgress = 0;
+        chaseTime = 1f;
+        chaseProgress = 0;
 		oldBulletPos = new List<Vector3>();
 		targetPositions = new List<Vector3>();
 		lasers = new List<GameObject>();
@@ -141,8 +150,8 @@ public class Enemy : MonoBehaviour {
 			currentState = EnemyState.Investigating;
 			targetDestination = target.transform.position;
 
-            //if timer completes, starts chasing.
-            if (discoverProgress >= discoverDelay)
+            //if timer completes, starts chasing, also if player is in light
+            if (discoverProgress >= discoverDelay || playScript.IsLit)
             {
 				if(audioSwitch[1] == false) {
 					audioSwitch[1] = true;
@@ -176,6 +185,14 @@ public class Enemy : MonoBehaviour {
     {
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.destination = targetDestination;
+        if(currentState == EnemyState.Chasing)
+        {
+            agent.speed = 4f;
+        }
+        else
+        {
+            agent.speed = 2.5f;
+        }
     }
 
 
@@ -239,16 +256,21 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void chasing()
     {
-
+        
         //moves towards target
         targetDestination = target.transform.position;
 
         if (!detection())
         {
-			audioSwitch[1] = false;
-			gameManager.UpdateTrack(2, -1);
-			isFiring = false;
-            currentState = EnemyState.Investigating;
+            chaseProgress += Time.deltaTime;
+            if(chaseProgress >= chaseTime)
+            {
+                audioSwitch[1] = false;
+                gameManager.UpdateTrack(2, -1);
+                isFiring = false;
+                currentState = EnemyState.Investigating;
+            }
+			
         }
 
         //if close to enemy, stops moving and looks at them.
@@ -322,8 +344,7 @@ public class Enemy : MonoBehaviour {
                     return true;
                 }
 
-
-        }
+        }   
         return false;
 
     }
