@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour {
                         {
                             if(light.type == LightType.Spot)
                             {
-                                if(Vector3.Angle(targetDir, light.transform.forward) < light.spotAngle)
+                                if(Vector3.Angle(targetDir, light.transform.forward) < light.spotAngle/2.0f)
                                 {
                                     if (hit.collider.gameObject.tag == "Player")
                                     {
