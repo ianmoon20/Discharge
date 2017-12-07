@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour {
     //Where the enemy starts out
     private Vector3 startLocation;
 
-    //where the enemy will paatrol
+    //where the enemy will patrol
     private Vector3[] path;
 	[SerializeField] int pathIndex = 0;
 
@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour {
     [SerializeField] float discoverDelay = 5;
     private float discoverProgress;
 
-    //The enemys current destination
+    //The enemies current destination
     private Vector3 targetDestination;
 
     [SerializeField]GameObject laser;
@@ -54,14 +54,17 @@ public class Enemy : MonoBehaviour {
     [SerializeField]float bulletSpeed = 10.0f; //Speed of the bullet
     private bool isFiring = false; //If the enemy is currently firing
     private List<GameObject> lasers; //Renders the laser line
+	private AudioSource laserSound;
 
     private bool[] audioSwitch = {false, false};
+
+    private Light spotLight;
 
     //floats for how far enemy sweeps for player
     private Quaternion sweepAngle;
     private Quaternion sweepProgress;
 
-    //floats to reactivate a disaled enemy
+    //floats to reactivate a disabled enemy
     private float reactivateTime;
     private float reactivateProgress;
 
@@ -72,7 +75,6 @@ public class Enemy : MonoBehaviour {
     //floats for giving up a chase
     private float chaseTime;
     private float chaseProgress;
-
 
     //getters and setters
     public float MoveSpeed { get { return moveSpeed; } }
@@ -116,6 +118,8 @@ public class Enemy : MonoBehaviour {
 		oldBulletPos = new List<Vector3>();
 		targetPositions = new List<Vector3>();
 		lasers = new List<GameObject>();
+		laserSound = GetComponent<AudioSource>();
+		spotLight = transform.GetChild(1).GetComponent<Light>();
     }
 
 	// Update is called once per frame
@@ -125,18 +129,31 @@ public class Enemy : MonoBehaviour {
         {
             //behavior is placed in methods for etter organization
             case EnemyState.Patrolling:
+				if(!spotLight.enabled)
+					spotLight.enabled = true;
+				if(spotLight.color != Color.white)
+					spotLight.color = Color.white;
                 patrolling();
                 break;
             case EnemyState.Investigating:
+				if(!spotLight.enabled)
+					spotLight.enabled = true;
+				if(spotLight.color != Color.yellow)
+					spotLight.color = Color.yellow;
                 investigating();
                 break;
             case EnemyState.Chasing:
+				if(!spotLight.enabled)
+					spotLight.enabled = true;
+				if(spotLight.color != Color.red)
+					spotLight.color = Color.red;
                 chasing();
                 break;
             case EnemyState.Sweeping:
                 sweeping();
                 break;
             case EnemyState.Disabled:
+                spotLight.enabled = false;
                 disabled();
                 break;
 
@@ -234,8 +251,6 @@ public class Enemy : MonoBehaviour {
 
             if (!detection())
             {
-
-
                 investigateProgress += Time.deltaTime;
                 if (investigateProgress > investigateTime)
                 {
@@ -256,7 +271,7 @@ public class Enemy : MonoBehaviour {
     /// </summary>
     private void chasing()
     {
-        
+
         //moves towards target
         targetDestination = target.transform.position;
 
@@ -270,7 +285,7 @@ public class Enemy : MonoBehaviour {
                 isFiring = false;
                 currentState = EnemyState.Investigating;
             }
-			
+
         }
 
         //if close to enemy, stops moving and looks at them.
@@ -344,7 +359,7 @@ public class Enemy : MonoBehaviour {
                     return true;
                 }
 
-        }   
+        }
         return false;
 
     }
@@ -395,6 +410,7 @@ public class Enemy : MonoBehaviour {
 		targetPositions.Add(((target.transform.position +
 								 playerCapColl.center - transform.position))
 								 .normalized + randomDeviation);
+		laserSound.Play();
     }
 
     public void simulateProjectiles()

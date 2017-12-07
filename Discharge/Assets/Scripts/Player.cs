@@ -31,7 +31,7 @@ public class Player : MonoBehaviour {
 		tpuc = gameObject.GetComponent<ThirdPersonUserControl> ();
 		noiseBubble = gameObject.GetComponent<SphereCollider> ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		crouching = tpc.Crouching;
