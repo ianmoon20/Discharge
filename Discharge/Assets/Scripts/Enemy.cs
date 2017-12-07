@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour {
 
     //where the enemy will paatrol
     private Vector3[] path;
-    private int pathIndex;
+	[SerializeField] int pathIndex = 0;
 
     //floats for spotting the player
     [SerializeField] float discoverDelay = 5;
@@ -97,7 +97,7 @@ public class Enemy : MonoBehaviour {
         initialState = (EnemyState)initState;
         path = new Vector3[setPath.Length];
         path = setPath;
-        pathIndex = 0;
+        //pathIndex = 0;
         targetDestination = path[pathIndex];
         startLocation = gameObject.transform.position;
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
