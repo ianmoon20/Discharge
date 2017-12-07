@@ -374,20 +374,28 @@ public class Enemy : MonoBehaviour {
     /// <param name="noiseLocation"></param>
     public void investigateLocation(Vector3 noiseLocation)
     {
-        //only sets investigation if not actively chasing enemy
-        if(currentState != EnemyState.Chasing)
+        //checks that player is not on a different elevation.
+        if (gameObject.transform.position.y - target.transform.position.y < 5 && gameObject.transform.position.y - target.transform.position.y > -5)
         {
-			if(audioSwitch[0] == false) {
-				audioSwitch[0] = true;
-				gameManager.UpdateTrack(1, 1);
-			}
 
-            currentState = EnemyState.Investigating;
+
+
+            //only sets investigation if not actively chasing enemy
+            if (currentState != EnemyState.Chasing)
+            {
+                if (audioSwitch[0] == false)
+                {
+                    audioSwitch[0] = true;
+                    gameManager.UpdateTrack(1, 1);
+                }
+
+                currentState = EnemyState.Investigating;
+            }
+
+
+
+            targetDestination = noiseLocation;
         }
-
-
-
-        targetDestination = noiseLocation;
     }
 
     /// <summary>
