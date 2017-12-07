@@ -129,14 +129,18 @@ public class Enemy : MonoBehaviour {
         {
             //behavior is placed in methods for etter organization
             case EnemyState.Patrolling:
-				if(!spotLight.enabled)
+                if (isFiring)
+                    isFiring = false;
+                if (!spotLight.enabled)
 					spotLight.enabled = true;
 				if(spotLight.color != Color.white)
 					spotLight.color = Color.white;
                 patrolling();
                 break;
             case EnemyState.Investigating:
-				if(!spotLight.enabled)
+                if (isFiring)
+                    isFiring = false;
+                if (!spotLight.enabled)
 					spotLight.enabled = true;
 				if(spotLight.color != Color.yellow)
 					spotLight.color = Color.yellow;
@@ -204,11 +208,11 @@ public class Enemy : MonoBehaviour {
         agent.destination = targetDestination;
         if(currentState == EnemyState.Chasing)
         {
-            agent.speed = 4f;
+            agent.speed = 3.5f;
         }
         else
         {
-            agent.speed = 2.5f;
+            agent.speed = 2f;
         }
     }
 
