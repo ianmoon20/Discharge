@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Scenes/AriaTestScene.unity
-=======
 - path: Assets/Scenes/LevelFour.unity
->>>>>>> 794329a8fad7647990c4445062b8dbc770fe645d
   isLoaded: 1
   isActive: 1
