@@ -10,6 +10,13 @@ public class Player : MonoBehaviour {
 	private bool sprinting = false;
 	private bool crouching = false;
 	private SphereCollider noiseBubble;
+	private AudioSource[] audioSources;
+	bool playNum = false;
+	[SerializeField]float stepRate = 0.2f;
+	float stepProgress = 0.0f;
+	float playVolume = 0.5f;
+	Vector3 curPos;
+	Vector3 prevPos;
 
     //Property for whether the player is in light or not
     public bool isLit;
@@ -30,10 +37,20 @@ public class Player : MonoBehaviour {
 		tpc = gameObject.GetComponent<ThirdPersonCharacter> ();
 		tpuc = gameObject.GetComponent<ThirdPersonUserControl> ();
 		noiseBubble = gameObject.GetComponent<SphereCollider> ();
+		audioSources = gameObject.GetComponents<AudioSource>();
+		curPos = prevPos = tpc.transform.position;
 	}
 
 	// Update is called once per frame
 	void Update () {
+		curPos = tpc.transform.position;
+		if((prevPos.x + 0.005f) < curPos.x || (prevPos.x - 0.005f) > curPos.x ||
+		   (prevPos.z + 0.005f) < curPos.z || (prevPos.z - 0.005f) > curPos.z) {
+			stepProgress += Time.deltaTime;
+		}
+
+		prevPos = curPos;
+
 		crouching = tpc.Crouching;
 		sprinting = tpuc.Sprinting;
 
@@ -41,10 +58,24 @@ public class Player : MonoBehaviour {
 			noiseBubble.radius = 0;
 		}else if (crouching) {
 			noiseBubble.radius = crouchRadius;
+			stepRate = 0.5f;
+			playVolume = 0.25f;
 		} else if (sprinting) {
 			noiseBubble.radius = sprintRadius;
+			stepRate = 0.25f;
+			playVolume = 0.5f;
 		} else {
 			noiseBubble.radius = walkRadius;
+			stepRate = 0.5f;
+			playVolume = 0.35f;
+		}
+
+		if(stepProgress >= stepRate) {
+				int audioNum = playNum ? 1 : 0;
+				audioSources[audioNum].volume = playVolume;
+				audioSources[audioNum].Play();
+				playNum = !playNum;
+				stepProgress = 0;
 		}
 
         if (Input.GetButtonDown("Fire1"))
