@@ -11,10 +11,8 @@ public class NextLevel : MonoBehaviour {
     }
 
     // Use this for initialization
-    void OnTriggerEnter(Collider other) {
-		if(other.gameObject.tag == "Player")
-        {
-            gameManager.CurrState = GameManager.States.Won;
-        }
-	}
+    void OnCollisionEnter(Collision other) {
+        Debug.Log("Hi Door");
+        gameManager.CurrState = GameManager.States.Won;
+    }
 }

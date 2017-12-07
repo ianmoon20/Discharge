@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
     private int[] enemyStateCount;
 
     //Property with Getter and Setter
-    private States currState;
+    public States currState;
 
     public States CurrState
     {
@@ -89,12 +89,14 @@ public class GameManager : MonoBehaviour {
 
         audioTrack = GetComponent<AudioTrack>();
 
-        enemyStateCount = new int[audioTrack.TrackSize];
-        for (int i = 0; i < enemyStateCount.Length; i++)
+        if(audioTrack != null)
         {
-            enemyStateCount[i] = 0;
+            enemyStateCount = new int[audioTrack.TrackSize];
+            for (int i = 0; i < enemyStateCount.Length; i++)
+            {
+                enemyStateCount[i] = 0;
+            }
         }
-
     }
 
     // Update is called once per frame
@@ -108,56 +110,8 @@ public class GameManager : MonoBehaviour {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
-        //Checking to see if there is a light
-        if (lights.Length >= 1)
-        {
-            //Going through each light
-            foreach(Light light in lightScripts)
-            {
-                //Making sure the light is on before testing
-                if (light.enabled == true)
-                {
-                    //Checking a certain distance (can change - just a placeholder)
-                    if (Vector3.Distance(light.transform.position, player.transform.position) <= light.range)
-                    {
-                        //Debug.Log("Distance passed");
-                        RaycastHit hit;
-
-                        Vector3 targetDir = (player.transform.position + new Vector3(0, .8f, 0)) - light.transform.position;
-                        Debug.DrawRay(light.transform.position, targetDir * light.range, Color.green);
-
-                        //Checking to see if anything is in between the light and the position
-                        if (Physics.Raycast(light.transform.position, targetDir, out hit))
-                        {
-                            if(light.type == LightType.Spot)
-                            {
-                                if(Vector3.Angle(targetDir, light.transform.forward) < light.spotAngle/2.0f)
-                                {
-                                    if (hit.collider.gameObject.tag == "Player")
-                                    {
-                                        Debug.Log("Hi Spot");
-                                        //Set the player to not being lit
-                                        inLight = true;
-                                    }
-                                }
-                            }
-                            //If the player is hit and we're a point light, nothing is in the way
-                            else if (hit.collider.gameObject.tag == "Player")
-                            {
-                                Debug.Log("Hi Point");
-                                //Set the player to not being lit
-                                inLight = true;
-                            }
-                        }
-                    }
-                }
-
-                playerScript.IsLit = inLight;
-            }
-        }
-
         //If current State is 'Won'
-        else if (currState == States.Won)
+        else if (currState == States.Won || Input.GetKeyDown(KeyCode.Delete))
         {
             //Increment the level then load
             sceneIndex++;
@@ -168,8 +122,9 @@ public class GameManager : MonoBehaviour {
                 sceneIndex = 0;
             }
 
-            //Load the scene
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            Debug.Log((SceneManager.GetActiveScene().buildIndex + 1));
+            Debug.Log(SceneManager.sceneCountInBuildSettings);
+            SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings);
         }
 
         //If there is a timer...
@@ -194,7 +149,55 @@ public class GameManager : MonoBehaviour {
         {
             currState = States.Playing;
         }
-	}
+
+        //Checking to see if there is a light
+        if (lights.Length >= 1)
+        {
+            //Going through each light
+            foreach (Light light in lightScripts)
+            {
+                //Making sure the light is on before testing
+                if (light.enabled == true)
+                {
+                    //Checking a certain distance (can change - just a placeholder)
+                    if (Vector3.Distance(light.transform.position, player.transform.position) <= light.range)
+                    {
+                        //Debug.Log("Distance passed");
+                        RaycastHit hit;
+
+                        Vector3 targetDir = (player.transform.position + new Vector3(0, .8f, 0)) - light.transform.position;
+                        Debug.DrawRay(light.transform.position, targetDir * light.range, Color.green);
+
+                        //Checking to see if anything is in between the light and the position
+                        if (Physics.Raycast(light.transform.position, targetDir, out hit))
+                        {
+                            if (light.type == LightType.Spot)
+                            {
+                                if (Vector3.Angle(targetDir, light.transform.forward) < light.spotAngle / 2.0f)
+                                {
+                                    if (hit.collider.gameObject.tag == "Player")
+                                    {
+                                        Debug.Log("Hi Spot");
+                                        //Set the player to not being lit
+                                        inLight = true;
+                                    }
+                                }
+                            }
+                            //If the player is hit and we're a point light, nothing is in the way
+                            else if (hit.collider.gameObject.tag == "Player")
+                            {
+                                Debug.Log("Hi Point");
+                                //Set the player to not being lit
+                                inLight = true;
+                            }
+                        }
+                    }
+                }
+
+                playerScript.IsLit = inLight;
+            }
+        }
+    }
 
     //Keeping track of how many enemies are in each state
     public void UpdateTrack(int index, int modifier) {

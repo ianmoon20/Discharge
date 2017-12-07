@@ -8,3 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LevelOne.unity
     guid: ac14d9259ffce4044a7f705e1cbadf2b
+  - enabled: 1
+    path: Assets/Scenes/LevelTwo.unity
+    guid: 1aab7425375f277419e043445f2435b7
+  - enabled: 1
+    path: Assets/Scenes/LevelFour.unity
+    guid: cc657458570c02d4491ae6f66be827c4
+  - enabled: 1
+    path: Assets/Scenes/AriaTestScene.unity
+    guid: 592d737b5ce286b43b3093660bdf85f3
