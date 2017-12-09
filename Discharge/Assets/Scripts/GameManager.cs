@@ -194,7 +194,7 @@ public class GameManager : MonoBehaviour {
                     }
                 }
 
-                playerScript.IsLit = inLight;
+                //playerScript.IsLit = inLight;
             }
         }
     }
