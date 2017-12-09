@@ -4,9 +4,6 @@ using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 public class Player : MonoBehaviour {
-
-    public Animator anim;
-
 	private ThirdPersonCharacter tpc;
 	private ThirdPersonUserControl tpuc;
 	private bool sprinting = false;
@@ -41,8 +38,6 @@ public class Player : MonoBehaviour {
 		noiseBubble = gameObject.GetComponent<SphereCollider> ();
 		audioSources = gameObject.GetComponents<AudioSource>();
 		curPos = prevPos = tpc.transform.position;
-
-        anim = GetComponent<Animator>();
 	}
 
 	// Update is called once per frame
