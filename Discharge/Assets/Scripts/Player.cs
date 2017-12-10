@@ -62,16 +62,16 @@ public class Player : MonoBehaviour {
 			noiseBubble.radius = 0;
 		}else if (crouching) {
 			noiseBubble.radius = crouchRadius;
-			stepRate = 0.5f;
-			playVolume = 0.25f;
+			stepRate = 0.4f;
+			playVolume = 0.1f;
 		} else if (sprinting) {
 			noiseBubble.radius = sprintRadius;
-			stepRate = 0.25f;
-			playVolume = 0.5f;
+			stepRate = 0.50f;
+			playVolume = 0.7f;
 		} else {
 			noiseBubble.radius = walkRadius;
 			stepRate = 0.5f;
-			playVolume = 0.35f;
+			playVolume = 0.25f;
 		}
 
 		if(stepProgress >= stepRate) {
