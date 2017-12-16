@@ -9,6 +9,7 @@ public class Lights : MonoBehaviour {
     private List<Light> lightScripts = new List<Light>();
     private List<Door> doorScripts = new List<Door>();
 
+    private AudioSource toggleSound;
 
     private bool prevEnabled;
     private bool isEnabled;
@@ -22,6 +23,9 @@ public class Lights : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+		toggleSound = GetComponent<AudioSource>();
+		toggleSound.volume = 0.25f;
+
         isEnabled = true;
         prevEnabled = true;
         if(objects.Count != 0)
@@ -39,13 +43,14 @@ public class Lights : MonoBehaviour {
             }
         }
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
         //Checking if the box is enabled
 		if((isEnabled == false && prevEnabled == true) || (isEnabled == true && prevEnabled == false))
         {
+			toggleSound.Play();
             //If it is not..
             foreach(Light light in lightScripts)
             {

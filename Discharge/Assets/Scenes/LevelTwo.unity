@@ -38,8 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.004005733, g: 0.00021855034, b: 0.00000005221992,
-    a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -110,6 +109,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    debug:
+      m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 7fecbf43850236c4c87b11fd267ade0e, type: 2}
 --- !u!1 &9301172
 GameObject:
@@ -517,9 +518,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 1081771715}
 --- !u!114 &269912363
@@ -3996,6 +3997,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 2
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4011,6 +4013,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 2
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4130,6 +4133,10 @@ GameObject:
   m_Component:
   - component: {fileID: 483008226}
   - component: {fileID: 483008225}
+  - component: {fileID: 483008230}
+  - component: {fileID: 483008229}
+  - component: {fileID: 483008228}
+  - component: {fileID: 483008227}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -4166,6 +4173,257 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &483008227
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 483008224}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: d2e83e603a2a447cea2b380527e46299, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!82 &483008228
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 483008224}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f0f5499fd92e345469265276ad9ad77e, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!82 &483008229
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 483008224}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 55a51a064bcc141f8b25351311164684, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!114 &483008230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 483008224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 027cd77d12ad04fe799d6ecebf2bbb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &501603374
 GameObject:
   m_ObjectHideFlags: 0
@@ -4243,6 +4501,7 @@ Mesh:
     firstByte: 0
     indexCount: 60
     topology: 0
+    baseVertex: 0
     firstVertex: 0
     vertexCount: 40
     localAABB:
@@ -4260,6 +4519,7 @@ Mesh:
   m_IsReadable: 1
   m_KeepVertices: 1
   m_KeepIndices: 1
+  m_IndexFormat: 0
   m_IndexBuffer: 000001000200010003000200040005000600050007000600080009000a0009000b000a000c000d000e000d000f000e00100011001200110013001200140015001600150017001600180019001a0019001b001a001c001d001e001d001f001e00200021002200210023002200240025002600250027002600
   m_Skin: []
   m_VertexData:
@@ -4446,9 +4706,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 1540767535}
 --- !u!114 &539400519
@@ -6809,6 +7069,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 2
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6824,6 +7085,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 2
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6873,9 +7135,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 564065588}
 --- !u!114 &550200909
@@ -10428,6 +10690,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 2
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10443,6 +10706,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 2
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -10488,6 +10752,7 @@ Mesh:
     firstByte: 0
     indexCount: 420
     topology: 0
+    baseVertex: 0
     firstVertex: 0
     vertexCount: 201
     localAABB:
@@ -10505,6 +10770,7 @@ Mesh:
   m_IsReadable: 1
   m_KeepVertices: 1
   m_KeepIndices: 1
+  m_IndexFormat: 0
   m_IndexBuffer: 000001000200010003000200040005000600050007000600080009000a0009000b000a000c000d000e000d000f000e00100011001200110013001200140015001600150017001600180019001a0019001b001a000e000f001c000f001d001c00060007001e0007001f001e000a000b0020000b00210020001a001b0022001b00230022002400250026002500270026001e001f0028001f0029002800200021002a0021002b002a002c002d002e002d002f002e002b00210030002100310030001a0022003200220033003200100012003400120035003400360037003800370039003800300031003a0031003b003a00320033003c0033003d003c00340035003e0035003f003e004000410042004100430042003b003100440031004500440032003c0046003c0047004600480049004a0049004b004a004c004d004e004d004f004e0043004100500041005100500048004a0052004a00530052005400550056005500570056002700250058002500590058001e0028005a0028005b005a002f002d005c002d005d005c00100034005e0034005f005e006000610062006100630062006400650066006500670066001d000f0068000f006900680006001e006a001e005a006a005f006b006c006b006d006c006e006f0070006f0071007000590072007300720074007300750076007700760078007700790052007a0052007b007a007c007d007e007d007f007e008000810082008100830082005e005f0084005f006c00840085005e0086005e008400860087008800890088008a008900680069008b0069008c008b006a005a008d005a007e008d008e008f0090008f00910090009200930094009300950094009600970098009700990098001a0032009a0032009b009a009c009d009e009d009f009e0069000f00a0000f00a100a00006006a00a2006a00a300a200a400a500a600a500a700a600a800a900aa00a900ab00aa00ac006900ad006900ae00ad006a008d00af008d00b000af0019001800b1001800b200b100b300b400b500b400b600b500ae006900b7006900b800b7006a00af00b900af00ba00b900bb00bc00bd00bc00be00bd0016001700bf001700c000bf000f000d00c1000d00c200c10004000600c3000600c400c300c500c600c700c600c800c700
   m_Skin: []
   m_VertexData:
@@ -10644,6 +10910,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10659,6 +10926,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -10676,9 +10944,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &591257054
@@ -10921,6 +11189,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10936,6 +11205,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -10953,9 +11223,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &733857534
@@ -11484,15 +11754,60 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 0}
 --- !u!4 &1008088968 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: 36801420edb3952448d36571bbd1f490, type: 3}
   m_PrefabInternal: {fileID: 925498007}
+<<<<<<< HEAD
+=======
+--- !u!1001 &1059056037
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4032412299163276, guid: cd4962f505f242b449db616b54cfd02e, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 42.36338
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032412299163276, guid: cd4962f505f242b449db616b54cfd02e, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032412299163276, guid: cd4962f505f242b449db616b54cfd02e, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 7.0011063
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032412299163276, guid: cd4962f505f242b449db616b54cfd02e, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032412299163276, guid: cd4962f505f242b449db616b54cfd02e, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032412299163276, guid: cd4962f505f242b449db616b54cfd02e, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032412299163276, guid: cd4962f505f242b449db616b54cfd02e, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032412299163276, guid: cd4962f505f242b449db616b54cfd02e, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: cd4962f505f242b449db616b54cfd02e, type: 2}
+  m_IsPrefabParent: 0
+>>>>>>> 7dd3ff49dc3568bfb7030f6a0c166fa6f1f82d94
 --- !u!43 &1081771715
 Mesh:
   m_ObjectHideFlags: 0
@@ -11505,6 +11820,7 @@ Mesh:
     firstByte: 0
     indexCount: 408
     topology: 0
+    baseVertex: 0
     firstVertex: 0
     vertexCount: 189
     localAABB:
@@ -11522,6 +11838,7 @@ Mesh:
   m_IsReadable: 1
   m_KeepVertices: 1
   m_KeepIndices: 1
+  m_IndexFormat: 0
   m_IndexBuffer: 000001000200010003000200040005000600050007000600080009000a0009000b000a000c000d000e000d000f000e001000110012001100130012001400150016001500170016000200030018000300190018000e000f001a000f001b001a001c001d001e001d001f001e000a000b0020000b00210020001900030022000300230022000a00200024002000250024002600270028002700290028002a002b002c002b002d002c0003000100230001002e00230008000a002f000a0024002f00300031003200310033003200220023003400230035003400240025003600250037003600380039003a0039003b003a003c003d003e003d003f003e004000410042004100430042004400450046004500470046001d001c0048001c0049004800340035004a0035004b004a004c0036004d0036004e004d0035004f004b004f0050004b00510052005300520054005300360037004e00370055004e003a003b0056003b0057005600580059005a0059005b005a004d004e005c004e005d005c0059005e005b005e005f005b006000610062006100630062004e0055005d00550064005d0065006600670066006800670069006a006b006a006c006b0050004f006d004f006e006d004c004d006f004d0070006f0071007200730072007400730075007600770076007800770079007a007b007a007c007b007d007e007f007e0080007f00480049008100490082008100830084008500840086008500870057008800570089008800820049008a0049008b008a001c001e008c001e008d008c0084007500860075008e00860049001c008b001c008c008b00750077008e0077008f008e009000910092009100930092009400950096009500970096008800890098008900990098008a008b009a008b009b009a008c008d009c008d009d009c009e009f00a0009f00a100a000a200a300a400a300a500a400a600a700a800a700a900a80092009300aa009300ab00aa00ac00ad00ae00ad00af00ae005e005900b0005900b100b0009200aa00b200aa00b300b200b4005e00b5005e00b000b500b600ac00b700ac00ae00b70059005800b1005800b800b100b900b600ba00b600b700ba0099008900bb008900bc00bb00
   m_Skin: []
   m_VertexData:
@@ -11765,9 +12082,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 0}
 --- !u!114 &1128040789
@@ -11940,9 +12257,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 2127577074}
 --- !u!114 &1271239265
@@ -14295,6 +14612,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 2
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -14310,6 +14628,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 2
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -15127,6 +15446,7 @@ Mesh:
     firstByte: 0
     indexCount: 276
     topology: 0
+    baseVertex: 0
     firstVertex: 0
     vertexCount: 123
     localAABB:
@@ -15144,6 +15464,7 @@ Mesh:
   m_IsReadable: 1
   m_KeepVertices: 1
   m_KeepIndices: 1
+  m_IndexFormat: 0
   m_IndexBuffer: 000001000200010003000200040005000600050007000600080009000a0009000b000a000c000d000e000d000f000e001000110012001100130012001400150016001500170016000200030018000300190018000e000f001a000f001b001a00060007001c0007001d001c000a000b001e000b001f001e001d00070020000700210020000e001a0022001a00230022001200130024001300250024001500140026001400270026000700050021000500280021000c000e0029000e00220029002a002b002c002b002d002c00220023002e0023002f002e0024002500300025003100300026002700320027003300320034003500360035003700360029002200380022002e00380039003a003b003a003c003b00310025003d0025003e003d00260032003f00320040003f004100420043004200440043003a0045003c00450046003c0047004100480041004300480049004a004b004a004c004b003d003e004d003e004e004d004f005000510050005200510053005400550054005600550057005800590058005a0059005b003c005c003c005d005c0043005e005f005e0060005f002d002b0061002b00620061004b004c0063004c00640063004d004e0065004e006600650067005500680055006900680055005600690056006a0069004c006b0064006b006c0064006d006e006f006e0070006f007100720073007200740073006c006b0075006b007600750067006800770068007800770061006200790062007a007900
   m_Skin: []
   m_VertexData:
@@ -15452,9 +15773,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 506110416}
 --- !u!114 &1630875866
@@ -16015,6 +16336,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 2
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -16030,6 +16352,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 2
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -16828,6 +17151,7 @@ Mesh:
     firstByte: 0
     indexCount: 276
     topology: 0
+    baseVertex: 0
     firstVertex: 0
     vertexCount: 154
     localAABB:
@@ -16845,6 +17169,7 @@ Mesh:
   m_IsReadable: 1
   m_KeepVertices: 1
   m_KeepIndices: 1
+  m_IndexFormat: 0
   m_IndexBuffer: 000001000200010003000200040005000600050007000600080009000a0009000b000a000c000d000e000d000f000e00100011001200110013001200140015001600150017001600170015001800150019001800030001001a0001001b001a0008000a001c000a001d001c00130011001e0011001f001e001800190020001900210020002200230024002300250024001c001d0026001d00270026001e001f0028001f00290028002a002b002c002b002d002c002e002f0030002f0031003000320033003400330035003400040006003600060037003600380039003a0039003b003a003c003d003e003d003f003e004000410042004100430042003600370044003700450044004600470048004700490048004a004b004c004d004e004f0034005000510050005200510023002200530022005400530055005600570056005800570059005a005b005c005d005e005f006000610060006200610063006400650064006600650067006800690068006a0069006b006c006d006c006e006d005f0061006f0070007100720039003800730038007400730075007600770076007800770074003800790038007a0079007b007c007d007c007e007d00550057007f00570080007f00810082008300820084008300850086008700860088008700550089008a0089008b008a006e006c008c006c008d008c008e008f0090008f00910090008d006c0092006c00930092009400950096009500970096007b007d0098007d0099009800
   m_Skin: []
   m_VertexData:
