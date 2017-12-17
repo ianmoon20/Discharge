@@ -64,6 +64,8 @@ public class GameManager : MonoBehaviour {
     //Time left to complete the level
     float levelTimer;
 
+    Time time;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -101,6 +103,13 @@ public class GameManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            ScreenCapture.CaptureScreenshot("screenshot.png");
+
+        }
+
         bool inLight = false;
 
         //If current State is 'Lost'
